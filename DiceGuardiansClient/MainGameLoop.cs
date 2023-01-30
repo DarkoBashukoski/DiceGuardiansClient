@@ -1,11 +1,15 @@
-﻿using DiceGuardiansClient.Source.Entities;
+﻿using DiceGuardiansClient.Source.Collection;
+using DiceGuardiansClient.Source.Collisions;
+using DiceGuardiansClient.Source.Entities;
 using DiceGuardiansClient.Source.GameStates;
 using DiceGuardiansClient.Source.Networking;
 using DiceGuardiansClient.Source.RenderEngine;
 using DiceGuardiansClient.Source.UserInput;
+using DiceGuardiansClient.Source.World;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace DiceGuardiansClient;
 
@@ -16,7 +20,6 @@ public class MainGameLoop : Game {
 
     private Camera _camera;
     private MasterRenderer _renderer;
-    //private MousePicker _mousePicker;
 
     //private MainMenu _menu;
 
@@ -38,13 +41,14 @@ public class MainGameLoop : Game {
     }
 
     protected override void Initialize() {
+        _camera = new Camera(new Vector3(6f, 21f, 17.8f), new Vector3(70f, 0f, 0f));
         Content = new ContentManager(Services, "Content");
-        _displayManager = new DisplayManager(GraphicsDevice, _graphics, Content);
+        _displayManager = new DisplayManager(GraphicsDevice, _graphics, Content, _camera);
         spriteBatch = new SpriteBatch(GraphicsDevice);
         
-        _camera = new Camera(new Vector3(6f, 20f, 23f), new Vector3(60f, 0f, 0f));
         _renderer = new MasterRenderer(_displayManager, spriteBatch);
-        //_mousePicker = new MousePicker(_camera, _renderer.GetProjectionMatrix());
+        AllCards.InitializeCardInfo(_displayManager); //TODO make server responsible
+        MousePicker.Start(_camera, _renderer.GetProjectionMatrix());
 
         //Model red = Content.Load<Model>("RedTile");
         //Model blue = Content.Load<Model>("BlueTile");
@@ -58,6 +62,7 @@ public class MainGameLoop : Game {
 
         NetworkManager.Start();
         StateManager.Start(_displayManager);
+        StateManager.SetState(new LoginScreen(_displayManager));
 
         base.Initialize();
     }
@@ -67,25 +72,25 @@ public class MainGameLoop : Game {
         KeyboardParser.Update();
         StateManager.GetState().Update(gameTime);
 
-        //_mousePicker.Update();
+        MousePicker.Update();
 
-        //if (_gameInstance != null) {
-        //    if (Keyboard.GetState().IsKeyDown(Keys.A)) {
-        //        _camera.SetPosition(_camera.GetPosition().X - 1, _camera.GetPosition().Y, _camera.GetPosition().Z);
-        //    }
-        //    if (Keyboard.GetState().IsKeyDown(Keys.D))
-        //    {
-        //        _camera.SetPosition(_camera.GetPosition().X + 1, _camera.GetPosition().Y, _camera.GetPosition().Z);
-        //    }
-        //    if (Keyboard.GetState().IsKeyDown(Keys.W))
-        //    {
-        //        _camera.SetPosition(_camera.GetPosition().X, _camera.GetPosition().Y, _camera.GetPosition().Z - 1);
-        //    }
-        //    if (Keyboard.GetState().IsKeyDown(Keys.S))
-        //    {
-        //        _camera.SetPosition(_camera.GetPosition().X, _camera.GetPosition().Y, _camera.GetPosition().Z + 1);
-        //    }
-        //}
+        if (StateManager.GetState() is GameInstance) {
+            if (Keyboard.GetState().IsKeyDown(Keys.A)) {
+                _camera.SetPosition(_camera.GetPosition().X - 1, _camera.GetPosition().Y, _camera.GetPosition().Z);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+            {
+                _camera.SetPosition(_camera.GetPosition().X + 1, _camera.GetPosition().Y, _camera.GetPosition().Z);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                _camera.SetPosition(_camera.GetPosition().X, _camera.GetPosition().Y, _camera.GetPosition().Z - 1);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+            {
+                _camera.SetPosition(_camera.GetPosition().X, _camera.GetPosition().Y, _camera.GetPosition().Z + 1);
+            }
+        }
 
         //Vector2 coords = BoardCollisions.GetTileCoords(_camera, _mousePicker.GetRay());
         //e1.Position = new Vector3(coords.X, 0, coords.Y);

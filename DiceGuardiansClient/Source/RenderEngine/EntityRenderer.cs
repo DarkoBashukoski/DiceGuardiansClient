@@ -9,12 +9,15 @@ namespace DiceGuardiansClient.Source.RenderEngine;
 
 public class EntityRenderer {
     private readonly Matrix _projectionMatrix;
+    private readonly DisplayManager _displayManager;
     
-    public EntityRenderer(Matrix projectionMatrix) {
+    public EntityRenderer(Matrix projectionMatrix, DisplayManager displayManager) {
         _projectionMatrix = projectionMatrix;
+        _displayManager = displayManager;
     }
 
     public void Render(Dictionary<Model, List<Entity>> entities, Matrix viewMatrix) {
+        _displayManager.GetGraphicsDevice().DepthStencilState = DepthStencilState.Default;
         foreach (Model model in entities.Keys) {
             foreach (Entity entity in entities[model]) {
                 Matrix worldMatrix = Maths.CreateWorldMatrix(entity.Position, entity.Rotation, entity.Scale);

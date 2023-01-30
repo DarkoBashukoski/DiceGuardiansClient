@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using DiceGuardiansClient.Source.Entities;
 using DiceGuardiansClient.Source.Gui;
+using DiceGuardiansClient.Source.Networking;
 using DiceGuardiansClient.Source.RenderEngine;
+using DiceGuardiansClient.Source.World;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Riptide;
 
 namespace DiceGuardiansClient.Source.GameStates;
 
@@ -15,7 +18,7 @@ public class MainMenu : State {
     
     private Image _background;
     private Image _logo;
-    private Image _container;
+    private ScalingImage _container;
 
     private Button _play;
     private Button _collection;
@@ -33,12 +36,11 @@ public class MainMenu : State {
     private Label _matchmakingLabel;
     private Label _timer;
     private Button _cancelButton;
-    private Button _debugStartMatch;
     private float _timeWaiting;
     
     public MainMenu(DisplayManager displayManager, User user) : base(displayManager) {
         _user = user;
-        LoadElements(DisplayManager);
+        LoadElements();
         
         _play.SetText("Play");
         _collection.SetText("Collection");
@@ -47,7 +49,6 @@ public class MainMenu : State {
         
         _matchmakingLabel.SetText("Finding Match...");
         _cancelButton.SetText("Cancel");
-        _debugStartMatch.SetText("DEBUG: Start Game");
         _timeWaiting = 0;
         _timer.SetText(TimeSpan.FromMilliseconds(_timeWaiting).ToString(@"mm\:ss"));
         
@@ -69,8 +70,7 @@ public class MainMenu : State {
                 _loadingCircle,
                 _matchmakingLabel,
                 _timer,
-                _cancelButton,
-                _debugStartMatch
+                _cancelButton
             };
         }
         
@@ -98,7 +98,6 @@ public class MainMenu : State {
             UpdateTimer(gameTime);
             _cancelButton.Update(gameTime);
             _loadingCircle.StepAnimation();
-            _debugStartMatch.Update(gameTime);
             return;
         }
         
@@ -108,19 +107,19 @@ public class MainMenu : State {
         _quit.Update(gameTime);
     }
     
-    private void LoadElements(DisplayManager displayManager) {
-        Texture2D buttonTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/Button");
-        Texture2D backgroundTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/MenuBackground");
-        Texture2D logoTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/Logo");
-        Texture2D containerTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/MenuContainer");
-        Texture2D profileTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/ProfileImage");
-        Texture2D loadingTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/Loading");
-        _font = displayManager.GetContent().Load<SpriteFont>("arial");
+    private void LoadElements() {
+        Texture2D buttonTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/Button");
+        Texture2D backgroundTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/MenuBackground");
+        Texture2D logoTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/Logo");
+        Texture2D containerTexture = DisplayManager.GetContent().Load<Texture2D>("MenuContainer");
+        Texture2D profileTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/ProfileImage");
+        Texture2D loadingTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/Loading");
+        _font = DisplayManager.GetContent().Load<SpriteFont>("arial");
 
         _background = new Image(backgroundTexture, new Vector2(0, 0), new Vector2(DisplayManager.GetWidth(), DisplayManager.GetHeight()));
         float ratio = (float) logoTexture.Height / logoTexture.Width;
         _logo = new Image(logoTexture, new Vector2(DisplayManager.GetWidth()/2-175, 25), new Vector2(350, 350*ratio));
-        _container = new Image(containerTexture, new Vector2(DisplayManager.GetWidth()/2-150, 185), new Vector2(300, 520));
+        _container = new ScalingImage(containerTexture, new Vector2(DisplayManager.GetWidth()/2-150, 185), new Vector2(300, 520), new Vector2(32, 32));
         _profileContainer = new Image(containerTexture, new Vector2(-60, -400), new Vector2(360, 520));
         
         _play = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 300), new Vector2(200, 50));
@@ -129,40 +128,61 @@ public class MainMenu : State {
         _quit = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 600), new Vector2(200, 50));
         
         _profileImage = new Image(profileTexture, new Vector2(10, 10), new Vector2(90, 90));
-        _username = new Label(_font, new Vector2(110, 15), displayManager.GetGraphicsDevice());
-        _mmr = new Label(_font, new Vector2(110, 45), displayManager.GetGraphicsDevice());
+        _username = new Label(_font, new Vector2(110, 15), DisplayManager.GetGraphicsDevice());
+        _mmr = new Label(_font, new Vector2(110, 45), DisplayManager.GetGraphicsDevice());
         
         _loadingCircle = new AnimatedImage(loadingTexture, new Vector2(4, 4), new Vector2(DisplayManager.GetWidth() / 2 - 75, 250), new Vector2(150, 150));
-        _matchmakingLabel = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 50, 400), displayManager.GetGraphicsDevice());
-        _timer = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 17, 450), displayManager.GetGraphicsDevice());
+        _matchmakingLabel = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 50, 400), DisplayManager.GetGraphicsDevice());
+        _timer = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 17, 450), DisplayManager.GetGraphicsDevice());
         _cancelButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 600), new Vector2(200, 50));
-        _debugStartMatch = new Button(buttonTexture, _font, new Vector2(1070, 660), new Vector2(200, 50));
     }
 
     private void SetListeners() {
         _play.Click += (_, _) => StartMatchmaking();
-        //_collection TODO
+        _collection.Click += (_, _) => OpenCollection();
         //_settings TODO
         _quit.Click += (_, _) => Environment.Exit(0);
 
         _cancelButton.Click += (_, _) => StopMatchmaking();
-        _debugStartMatch.Click += (_, _) => StartGame(); //TODO delete this
     }
 
     private void StartMatchmaking() {
         _matchmaking = true;
         _timeWaiting = 0;
         _timer.SetText(TimeSpan.FromMilliseconds(_timeWaiting).ToString(@"mm\:ss"));
-        //TODO send matchmaking message
+        
+        Message m = Message.Create(MessageSendMode.Reliable, ClientToServerId.StartMatchmaking);
+        m.AddLong(_user.GetUserId());
+        NetworkManager.GetClient().Send(m);
     }
 
     private void StopMatchmaking() {
+        Message m = Message.Create(MessageSendMode.Reliable, ClientToServerId.CancelMatchmaking);
+        m.AddLong(_user.GetUserId());
+        NetworkManager.GetClient().Send(m);
+        
         _matchmaking = false;
-        //TODO send cancel message
     }
 
-    private void StartGame() { //TODO delete this
-        StateManager.SetState(new GameInstance(DisplayManager));
+    public void TriggerStartGame(Message m) {
+        bool playerGoesFirst = m.GetInt() == 1;
+        User player = new User(m.GetLong(), m.GetString(), m.GetInt(), m.GetInt(), m.GetInt());
+        User opponent = new User(m.GetLong(), m.GetString(), m.GetInt(), m.GetInt(), m.GetInt());
+
+        Dictionary<long, int> deck = new Dictionary<long, int>();
+        int count = m.GetInt();
+        for (int i = 0; i < count; i++) {
+            long cardId = m.GetLong();
+            int cardAmount = m.GetInt();
+            deck[cardId] = cardAmount;
+        }
+        
+        GameInstance game = new GameInstance(DisplayManager, playerGoesFirst, player, opponent, deck);
+        StateManager.SetState(game);
+    }
+
+    private void OpenCollection() {
+        StateManager.SetState(new Collection(DisplayManager, _user));
     }
 
     private void UpdateTimer(GameTime gameTime) {

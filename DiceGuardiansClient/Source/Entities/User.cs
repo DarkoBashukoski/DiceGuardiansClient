@@ -1,6 +1,7 @@
 namespace DiceGuardiansClient.Source.Entities; 
 
 public class User {
+    private long _userId;
     private string _userName;
     private int _mmr;
     private int _gamesPlayed;
@@ -13,13 +14,15 @@ public class User {
         _gamesWon = 0;
     }
 
-    public User(string userName, int mmr, int gamesPlayed, int gamesWon) {
+    public User(long userId, string userName, int mmr, int gamesPlayed, int gamesWon) {
+        _userId = userId;
         _userName = userName;
         _mmr = mmr;
         _gamesPlayed = gamesPlayed;
         _gamesWon = gamesWon;
     }
-    
+
+    public long GetUserId() {return _userId;}
     public string GetUserName() {return _userName;}
     public int GetMmr() {return _mmr;}
     public int GetGamesPlayed() {return _gamesPlayed;}

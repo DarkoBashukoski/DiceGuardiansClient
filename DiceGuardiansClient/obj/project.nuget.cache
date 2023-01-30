@@ -1,16 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "hHQiyte1am/p/dMnGmA1EKDr9AxnbS9SkqNICsItjWxDcc61mJOGNHXrbG1hxjL2XHw6HH4al48Qj/C3ghhu3A==",
+  "dgSpecHash": "i2PVY/Xf7lXsyVqFrnwaioQYngH8EJ4lQz3+bFHzDE7zAUHdbQttkvXFFnrSP17rtUlyh68lfmCYw5sOrqH62g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Spark\\RiderProjects\\DiceGuardiansClient\\DiceGuardiansClient\\DiceGuardiansClient.csproj",
+  "projectFilePath": "C:\\Users\\Darko\\RiderProjects\\DiceGuardiansClient\\DiceGuardiansClient\\DiceGuardiansClient.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Spark\\.nuget\\packages\\monogame.content.builder.task\\3.8.1.303\\monogame.content.builder.task.3.8.1.303.nupkg.sha512",
-    "C:\\Users\\Spark\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.1.303\\monogame.framework.desktopgl.3.8.1.303.nupkg.sha512",
-    "C:\\Users\\Spark\\.nuget\\packages\\riptidenetworking.riptide\\2.0.0\\riptidenetworking.riptide.2.0.0.nupkg.sha512",
-    "C:\\Users\\Spark\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.12\\microsoft.netcore.app.ref.6.0.12.nupkg.sha512",
-    "C:\\Users\\Spark\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.12\\microsoft.windowsdesktop.app.ref.6.0.12.nupkg.sha512",
-    "C:\\Users\\Spark\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.12\\microsoft.aspnetcore.app.ref.6.0.12.nupkg.sha512",
-    "C:\\Users\\Spark\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.12\\microsoft.netcore.app.host.win-x64.6.0.12.nupkg.sha512"
+    "C:\\Users\\Darko\\.nuget\\packages\\monogame.content.builder.task\\3.8.1.303\\monogame.content.builder.task.3.8.1.303.nupkg.sha512",
+    "C:\\Users\\Darko\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.1.303\\monogame.framework.desktopgl.3.8.1.303.nupkg.sha512",
+    "C:\\Users\\Darko\\.nuget\\packages\\riptidenetworking.riptide\\2.0.0\\riptidenetworking.riptide.2.0.0.nupkg.sha512"
   ],
   "logs": []
 }

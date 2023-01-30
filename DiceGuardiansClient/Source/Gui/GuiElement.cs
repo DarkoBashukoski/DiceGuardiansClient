@@ -7,7 +7,7 @@ public abstract class GuiElement {
     protected Texture2D _texture;
     protected Vector2 _position;
     protected Vector2 _size;
-    protected Rectangle ColisionBox => new((int)_position.X, (int)_position.Y, (int)_size.X, (int)_size.Y);
+    protected Rectangle CollisionBox => new((int)_position.X, (int)_position.Y, (int)_size.X, (int)_size.Y);
     
     public abstract void Draw(SpriteBatch spriteBatch);
 

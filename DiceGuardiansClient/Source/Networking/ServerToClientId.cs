@@ -5,5 +5,12 @@ public enum ServerToClientId : ushort {
     InvalidLoginWrongPassword = 2,
     SuccessfulLogin = 3,
     InvalidRegisterUsernameAlreadyTaken = 4,
-    SuccessfulRegister = 5
+    SuccessfulRegister = 5,
+    SuccessfulGetCollectionResponse = 6,
+    StartGame = 7,
+    BeginStandby = 101,
+    BeginDiceSelect = 102,
+    BeginMain = 103,
+    BeginEnd = 104,
+    DiceRollResult = 201
 }

@@ -77,8 +77,8 @@ public class TextBox : GuiElement {
         Vector2 textPos = _position;
         
         if (_centerText) {
-            int x = (int) (ColisionBox.X + ColisionBox.Width / 2 - _font.MeasureString(_text).X / 2);
-            int y = (int) (ColisionBox.Y + ColisionBox.Height / 2 - _font.MeasureString(_text).Y / 2);
+            int x = (int) (CollisionBox.X + CollisionBox.Width / 2 - _font.MeasureString(_text).X / 2);
+            int y = (int) (CollisionBox.Y + CollisionBox.Height / 2 - _font.MeasureString(_text).Y / 2);
             textPos = new Vector2(x, y);
         }
 

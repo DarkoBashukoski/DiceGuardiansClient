@@ -1,5 +1,6 @@
 using DiceGuardiansClient.Source.Networking;
 using DiceGuardiansClient.Source.RenderEngine;
+using DiceGuardiansClient.Source.World;
 using Riptide;
 
 namespace DiceGuardiansClient.Source.GameStates; 
@@ -42,5 +43,40 @@ public static class StateManager {
     [MessageHandler((ushort)ServerToClientId.SuccessfulRegister)]
     private static void SuccessfulRegister(Message m) {
         if (_currentState is LoginScreen screen) {screen.TriggerSuccessfulRegister(m);}
+    }
+    
+    [MessageHandler((ushort)ServerToClientId.SuccessfulGetCollectionResponse)]
+    private static void SuccessfulGetCollectionResponse(Message m) {
+        if (_currentState is Collection screen) {screen.TriggerSuccessfulGetCollection(m);}
+    }
+    
+    [MessageHandler((ushort)ServerToClientId.StartGame)]
+    private static void StartGame(Message m) {
+        if (_currentState is MainMenu screen) {screen.TriggerStartGame(m);}
+    }
+    
+    [MessageHandler((ushort)ServerToClientId.BeginStandby)]
+    private static void BeginStandby(Message m) {
+        if (_currentState is GameInstance screen) {screen.TriggerBeginStandby(m);}
+    }
+    
+    [MessageHandler((ushort)ServerToClientId.BeginDiceSelect)]
+    private static void BeginDiceSelect(Message m) {
+        if (_currentState is GameInstance screen) {screen.TriggerBeginDiceSelect(m);}
+    }
+    
+    [MessageHandler((ushort)ServerToClientId.BeginMain)]
+    private static void BeginMain(Message m) {
+        if (_currentState is GameInstance screen) {screen.TriggerBeginMain(m);}
+    }
+    
+    [MessageHandler((ushort)ServerToClientId.BeginEnd)]
+    private static void BeginEnd(Message m) {
+        if (_currentState is GameInstance screen) {screen.TriggerBeginEnd(m);}
+    }
+    
+    [MessageHandler((ushort)ServerToClientId.DiceRollResult)]
+    private static void DiceRollResult(Message m) {
+        if (_currentState is GameInstance screen) {screen.TriggerDiceRollResult(m);}
     }
 }

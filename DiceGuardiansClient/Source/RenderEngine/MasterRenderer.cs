@@ -24,7 +24,7 @@ public class MasterRenderer {
         _displayManager = displayManager;
         CreateProjectionMatrix();
         
-        _entityRenderer = new EntityRenderer(_projectionMatrix);
+        _entityRenderer = new EntityRenderer(_projectionMatrix, _displayManager);
         _entities = new Dictionary<Model, List<Entity>>();
 
         _guiRenderer = new GuiRenderer(spriteBatch);

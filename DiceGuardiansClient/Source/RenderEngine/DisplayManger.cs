@@ -1,3 +1,4 @@
+using DiceGuardiansClient.Source.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -11,11 +12,13 @@ public class DisplayManager {
     private readonly GraphicsDevice _graphicsDevice;
     private readonly GraphicsDeviceManager _graphics;
     private readonly ContentManager _content;
+    private readonly Camera _camera;
 
-    public DisplayManager(GraphicsDevice device, GraphicsDeviceManager manager, ContentManager content) {
+    public DisplayManager(GraphicsDevice device, GraphicsDeviceManager manager, ContentManager content, Camera camera) {
         _graphicsDevice = device;
         _graphics = manager;
         _content = content;
+        _camera = camera;
         _graphics.PreferredBackBufferWidth = 1280;
         _graphics.PreferredBackBufferHeight = 720;
         _graphics.ApplyChanges();
@@ -35,5 +38,9 @@ public class DisplayManager {
 
     public GraphicsDevice GetGraphicsDevice() {
         return _graphicsDevice;
+    }
+
+    public Camera GetCamera() {
+        return _camera;
     }
 }

@@ -31,7 +31,7 @@ public class AnimatedImage : GuiElement {
             height
         );
         
-        spriteBatch.Draw(_texture, ColisionBox, source, Color.White);
+        spriteBatch.Draw(_texture, CollisionBox, source, Color.White);
     }
     
     public void StepAnimation() {

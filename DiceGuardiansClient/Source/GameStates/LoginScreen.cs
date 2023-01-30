@@ -15,7 +15,7 @@ public class LoginScreen : State {
     
     private Image _background;
     private Image _logo;
-    private Image _container;
+    private ScalingImage _container;
 
     private Label _usernameLabel;
     private Label _passwordLabel;
@@ -39,7 +39,7 @@ public class LoginScreen : State {
     private AnimatedImage _loadingCircle;
 
     public LoginScreen(DisplayManager displayManager) : base(displayManager){
-        LoadElements(DisplayManager);
+        LoadElements();
 
         _usernameLabel.SetText("Username");
         _passwordLabel.SetText("Password");
@@ -129,18 +129,18 @@ public class LoginScreen : State {
         };
     }
 
-    private void LoadElements(DisplayManager displayManager) {
-        Texture2D backgroundTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/MenuBackground");
-        Texture2D logoTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/Logo");
-        Texture2D containerTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/MenuContainer");
-        Texture2D buttonTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/Button");
-        Texture2D loadingTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/Loading");
-        Texture2D textBoxTexture = displayManager.GetContent().Load<Texture2D>("LoadingScreen/TextBox");
-        Texture2D caretTexture = displayManager.GetContent().Load<Texture2D>("textCaret");
-        _font = displayManager.GetContent().Load<SpriteFont>("arial");
+    private void LoadElements() {
+        Texture2D backgroundTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/MenuBackground");
+        Texture2D logoTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/Logo");
+        Texture2D containerTexture = DisplayManager.GetContent().Load<Texture2D>("MenuContainer");
+        Texture2D buttonTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/Button");
+        Texture2D loadingTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/Loading");
+        Texture2D textBoxTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/TextBox");
+        Texture2D caretTexture = DisplayManager.GetContent().Load<Texture2D>("textCaret");
+        _font = DisplayManager.GetContent().Load<SpriteFont>("arial");
         
-        _usernameLabel = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 95, 280), displayManager.GetGraphicsDevice());
-        _passwordLabel = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 95, 380), displayManager.GetGraphicsDevice());
+        _usernameLabel = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 95, 280), DisplayManager.GetGraphicsDevice());
+        _passwordLabel = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 95, 380), DisplayManager.GetGraphicsDevice());
         _username = new TextBox(textBoxTexture, caretTexture, _font, new Vector2(DisplayManager.GetWidth()/2-100, 300), new Vector2(200, 50));
         _password = new TextBox(textBoxTexture, caretTexture, _font, new Vector2(DisplayManager.GetWidth()/2-100, 400), new Vector2(200, 50));
         _loginButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 500), new Vector2(200, 50));
@@ -149,16 +149,16 @@ public class LoginScreen : State {
         _registerButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 500), new Vector2(200, 50));
         _backButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 150, 630), new Vector2(300, 50));
 
-        _validatingLogin = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 75, 400), displayManager.GetGraphicsDevice());
+        _validatingLogin = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 75, 400), DisplayManager.GetGraphicsDevice());
         
         _background = new Image(backgroundTexture, new Vector2(0, 0), new Vector2(DisplayManager.GetWidth(), DisplayManager.GetHeight()));
         float ratio = (float) logoTexture.Height / logoTexture.Width;
         _logo = new Image(logoTexture, new Vector2(DisplayManager.GetWidth()/2-175, 25), new Vector2(350, 350*ratio));
-        _container = new Image(containerTexture, new Vector2(DisplayManager.GetWidth()/2-150, 185), new Vector2(300, 420));
+        _container = new ScalingImage(containerTexture, new Vector2(DisplayManager.GetWidth()/2-150, 185), new Vector2(300, 420), new Vector2(32, 32));
         _loadingCircle = new AnimatedImage(loadingTexture, new Vector2(4, 4), new Vector2(DisplayManager.GetWidth() / 2 - 75, 250), new Vector2(150, 150));
 
-        _usernameError = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 95, 350), displayManager.GetGraphicsDevice());
-        _passwordError = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 95, 450), displayManager.GetGraphicsDevice());
+        _usernameError = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 95, 350), DisplayManager.GetGraphicsDevice());
+        _passwordError = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 95, 450), DisplayManager.GetGraphicsDevice());
     }
 
     private void SetListeners() {
@@ -234,12 +234,13 @@ public class LoginScreen : State {
     }
 
     public void TriggerSuccessfulLogin(Message m) {
+        long userId = m.GetLong();
         string username = m.GetString();
         int mmr = m.GetInt();
         int gamesPlayed = m.GetInt();
         int gamesWon = m.GetInt();
 
-        User user = new User(username, mmr, gamesPlayed, gamesWon);
+        User user = new User(userId, username, mmr, gamesPlayed, gamesWon);
 
         StateManager.SetState(new MainMenu(DisplayManager, user));
     }
@@ -250,12 +251,13 @@ public class LoginScreen : State {
     }
 
     public void TriggerSuccessfulRegister(Message m) {
+        long userId = m.GetLong();
         string username = m.GetString();
         int mmr = m.GetInt();
         int gamesPlayed = m.GetInt();
         int gamesWon = m.GetInt();
 
-        User user = new User(username, mmr, gamesPlayed, gamesWon);
+        User user = new User(userId, username, mmr, gamesPlayed, gamesWon);
 
         StateManager.SetState(new MainMenu(DisplayManager, user));
     }

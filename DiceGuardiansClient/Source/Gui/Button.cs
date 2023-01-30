@@ -9,6 +9,7 @@ public class Button : GuiElement {
     private readonly SpriteFont _font;
     private string _text;
     private bool _isHighlighted;
+    private bool _isDisabled;
     
     public event EventHandler Click;
 
@@ -22,30 +23,35 @@ public class Button : GuiElement {
         _text = "";
         _isHighlighted = false;
         _previousMouse = Mouse.GetState();
+        _isDisabled = false;
     }
     
     public override void Draw(SpriteBatch spriteBatch) {
         spriteBatch.Draw(
             _texture,
-            ColisionBox,
+            CollisionBox,
             new Rectangle(0, _isHighlighted ? (_texture.Height / 2) : 0, _texture.Width, _texture.Height / 2),
-            Color.White);
+            _isDisabled ? Color.DimGray : Color.White);
 
         if (string.IsNullOrEmpty(_text)) return;
-        int x = (int) (ColisionBox.X + ColisionBox.Width / 2 - _font.MeasureString(_text).X / 2);
-        int y = (int) (ColisionBox.Y + ColisionBox.Height / 2 - _font.MeasureString(_text).Y / 2);
+        int x = (int) (CollisionBox.X + CollisionBox.Width / 2 - _font.MeasureString(_text).X / 2);
+        int y = (int) (CollisionBox.Y + CollisionBox.Height / 2 - _font.MeasureString(_text).Y / 2);
             
         spriteBatch.DrawString(_font, _text, new Vector2(x, y) + Vector2.One, Color.Black);
         spriteBatch.DrawString(_font, _text, new Vector2(x, y), Color.White);
     }
 
     public void Update(GameTime gameTime) {
+        if (_isDisabled) {
+            return;
+        }
+        
         MouseState mouse = Mouse.GetState();
         Point point = new Point(mouse.X, mouse.Y);
 
         _isHighlighted = false;
 
-        if (ColisionBox.Contains(point)) {
+        if (CollisionBox.Contains(point)) {
             _isHighlighted = true;
             if (_previousMouse.LeftButton == ButtonState.Released && mouse.LeftButton == ButtonState.Pressed) {
                 Click?.Invoke(this, EventArgs.Empty);
@@ -61,5 +67,9 @@ public class Button : GuiElement {
 
     public string GetText() {
         return _text;
+    }
+
+    public void SetDisabled(bool isDisabled) {
+        _isDisabled = isDisabled;
     }
 }
