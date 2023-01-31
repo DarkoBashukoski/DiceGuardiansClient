@@ -13,10 +13,10 @@ public static class AllCards {
         _allCards = new Dictionary<long, Card>();
         Texture2D cardTexture = displayManager.GetContent().Load<Texture2D>("Cards/test-card");
         for (int i = 0; i < 30; i++) {
-            _allCards[i] = new Card(i, $"test-card-{i}", 4, 3, 2, "testString", "1xs 2xr 1xa 1xt 1xd 1xm", cardTexture);
+            _allCards[i] = new Card(i, $"test-card-{i}", i, 4, 3, 2, "testString", "1xs 2xr 1xa 1xt 1xd 1xm", cardTexture);
         }
 
-        _diceGuardian = new Card(9999, "Dice Guardian", 1, 0, 30, "", "1xs 1xs 1xs 1xs 1xs 1xs", cardTexture);
+        _diceGuardian = new Card(9999, "Dice Guardian", 0, 1, 0, 30, "", "1xs 1xs 1xs 1xs 1xs 1xs", cardTexture);
     }
 
     public static Card GetCardData(long cardId) {

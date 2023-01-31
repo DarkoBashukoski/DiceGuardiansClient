@@ -109,3 +109,6 @@ C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\n
 C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\PlayerMinion.xnb
 C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\playerMinionTemp.xnb
 C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\playerMinionTemp_0.xnb
+C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\CardNameSlot.xnb
+C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\Summoning.xnb
+C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\fontMedium.xnb

@@ -5,6 +5,10 @@ namespace DiceGuardiansClient.Source.UserInput;
 public static class KeyboardParser {
     private static KeyboardState _keyboard = Keyboard.GetState();
     private static KeyboardState _oldKeyboard = Keyboard.GetState();
+
+    public static bool CheckSinglePress(Keys key) {
+        return _keyboard.IsKeyDown(key) && !_oldKeyboard.IsKeyDown(key);
+    }
     
     public static bool TryConvertKeyboardInput(out char key) {
         Keys[] keys = _keyboard.GetPressedKeys();

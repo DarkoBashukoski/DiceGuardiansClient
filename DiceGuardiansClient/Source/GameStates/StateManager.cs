@@ -79,4 +79,14 @@ public static class StateManager {
     private static void DiceRollResult(Message m) {
         if (_currentState is GameInstance screen) {screen.TriggerDiceRollResult(m);}
     }
+    
+    [MessageHandler((ushort)ServerToClientId.PlaceTile)]
+    private static void PlaceTile(Message m) {
+        if (_currentState is GameInstance screen) {screen.TriggerPlaceTile(m);}
+    }
+    
+    [MessageHandler((ushort)ServerToClientId.MoveMinion)]
+    private static void MoveMinion(Message m) {
+        if (_currentState is GameInstance screen) {screen.TriggerMoveMinion(m);}
+    }
 }

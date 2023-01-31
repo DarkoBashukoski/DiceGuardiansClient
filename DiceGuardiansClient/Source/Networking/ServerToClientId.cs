@@ -12,5 +12,7 @@ public enum ServerToClientId : ushort {
     BeginDiceSelect = 102,
     BeginMain = 103,
     BeginEnd = 104,
-    DiceRollResult = 201
+    DiceRollResult = 201,
+    PlaceTile = 202,
+    MoveMinion = 203
 }

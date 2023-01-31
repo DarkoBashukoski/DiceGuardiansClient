@@ -10,17 +10,21 @@ public class CrestPool {
 
     public CrestPool() {
         _pool = new Dictionary<Crest, int> {
-            [Crest.SUMMON] = 0,
+            [Crest.SUMMON] = 99, //TODO set back to 0 after summoning is implemented
             [Crest.ATTACK] = 0,
-            [Crest.MOVEMENT] = 0,
+            [Crest.MOVEMENT] = 99,
             [Crest.DEFENSE] = 0,
             [Crest.MAGIC] = 0,
             [Crest.TRAP] = 0
         };
     }
 
-    public int getCrests(Crest type) {
+    public int GetCrests(Crest type) {
         return _pool[type];
+    }
+    
+    public void SpendCrest(Crest type, int count) {
+        _pool[type] -= count;
     }
 
     public override string ToString() {

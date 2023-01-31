@@ -20,6 +20,18 @@ public class HumanPlayer {
         _hasSummoned = false;
     }
 
+    public void ResetForTurn() {
+        _hasSummoned = false;
+    }
+
+    public void SetHasSummoned(bool hasSummoned) {
+        _hasSummoned = hasSummoned;
+    }
+
+    public bool HasSummoned() {
+        return _hasSummoned;
+    }
+
     public User GetUser() {
         return _user;
     }

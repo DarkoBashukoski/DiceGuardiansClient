@@ -6,5 +6,8 @@ public enum ClientToServerId : ushort {
     GetCollection = 3,
     StartMatchmaking = 4,
     CancelMatchmaking = 5,
-    SelectDiceRoll = 6
+    SelectDiceRoll = 6,
+    EndTurn = 7,
+    PlaceTile = 8,
+    MoveMinion = 9
 }

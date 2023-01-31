@@ -22,7 +22,11 @@ public class HumanOpponent {
         return _crestPool;
     }
 
-    public int getDeckSize() {
+    public int GetDeckSize() {
         return _deckSize;
+    }
+
+    public void SetDeckSize(int size) {
+        _deckSize = size;
     }
 }

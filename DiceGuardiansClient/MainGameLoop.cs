@@ -6,6 +6,7 @@ using DiceGuardiansClient.Source.Networking;
 using DiceGuardiansClient.Source.RenderEngine;
 using DiceGuardiansClient.Source.UserInput;
 using DiceGuardiansClient.Source.World;
+using DiceGuardiansClient.Source.World.Summoning;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -49,6 +50,7 @@ public class MainGameLoop : Game {
         _renderer = new MasterRenderer(_displayManager, spriteBatch);
         AllCards.InitializeCardInfo(_displayManager); //TODO make server responsible
         MousePicker.Start(_camera, _renderer.GetProjectionMatrix());
+        AllPieces.Start();
 
         //Model red = Content.Load<Model>("RedTile");
         //Model blue = Content.Load<Model>("BlueTile");
@@ -70,6 +72,7 @@ public class MainGameLoop : Game {
     protected override void Update(GameTime gameTime) {
         NetworkManager.Update();
         KeyboardParser.Update();
+        MouseInput.Update();
         StateManager.GetState().Update(gameTime);
 
         MousePicker.Update();
