@@ -1,5 +1,6 @@
 using DiceGuardiansClient.Source.UserInput;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -8,6 +9,7 @@ namespace DiceGuardiansClient.Source.Gui;
 public class TextBox : GuiElement {
     private readonly Texture2D _caretTexture;
     private readonly SpriteFont _font;
+    private readonly SoundEffect _clickSfx;
 
     private string _text;
     
@@ -18,7 +20,7 @@ public class TextBox : GuiElement {
 
     private MouseState _previousMouse;
     
-    public TextBox(Texture2D textBoxTexture, Texture2D caretTexture, SpriteFont font, Vector2 position, Vector2 size) {
+    public TextBox(Texture2D textBoxTexture, Texture2D caretTexture, SpriteFont font, Vector2 position, Vector2 size, SoundEffect clickSfx) {
         _texture = textBoxTexture;
         _caretTexture = caretTexture;
         _font = font;
@@ -30,6 +32,7 @@ public class TextBox : GuiElement {
         _isPassword = false;
         _centerText = false;
         _previousMouse = Mouse.GetState();
+        _clickSfx = clickSfx;
     }
 
     public void SetIsPassword(bool isPassword) {
@@ -54,6 +57,9 @@ public class TextBox : GuiElement {
         
         if (_isSelected && KeyboardParser.TryConvertKeyboardInput(out char c)) {
             _text += c;
+            if (c != (char) 0) {
+                _clickSfx.Play();
+            }
         }
 
         _previousMouse = Mouse.GetState();

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DiceGuardiansClient.Source.Entities;
 using DiceGuardiansClient.Source.RenderEngine;
 
@@ -41,5 +42,28 @@ public class CollectionManager {
 
     public int GetCardCount(long cardId) {
         return _ownedCards.ContainsKey(cardId) ? _ownedCards[cardId] : 0;
+    }
+
+    public int GetCardCountInDeck(long cardId) {
+        return _deck.ContainsKey(cardId) ? _deck[cardId] : 0;
+    }
+
+    public int GetCurrentDeckSize() {
+        return _deck.Sum(kvp => kvp.Value);
+    }
+
+    public void AddToDeck(long cardId) {
+        if (_deck.ContainsKey(cardId)) {
+            _deck[cardId] += 1;
+        } else {
+            _deck[cardId] = 1;
+        }
+    }
+
+    public void RemoveFromDeck(long cardId) {
+        _deck[cardId]--;
+        if (_deck[cardId] == 0) {
+            _deck.Remove(cardId);
+        }
     }
 }

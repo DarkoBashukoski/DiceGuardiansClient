@@ -6,6 +6,7 @@ using DiceGuardiansClient.Source.Networking;
 using DiceGuardiansClient.Source.RenderEngine;
 using DiceGuardiansClient.Source.World;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Riptide;
 
@@ -115,6 +116,7 @@ public class MainMenu : State {
         Texture2D profileTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/ProfileImage");
         Texture2D loadingTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/Loading");
         _font = DisplayManager.GetContent().Load<SpriteFont>("arial");
+        SoundEffect buttonClick = DisplayManager.GetContent().Load<SoundEffect>("MouseSFX");
 
         _background = new Image(backgroundTexture, new Vector2(0, 0), new Vector2(DisplayManager.GetWidth(), DisplayManager.GetHeight()));
         float ratio = (float) logoTexture.Height / logoTexture.Width;
@@ -122,10 +124,10 @@ public class MainMenu : State {
         _container = new ScalingImage(containerTexture, new Vector2(DisplayManager.GetWidth()/2-150, 185), new Vector2(300, 520), new Vector2(32, 32));
         _profileContainer = new Image(containerTexture, new Vector2(-60, -400), new Vector2(360, 520));
         
-        _play = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 300), new Vector2(200, 50));
-        _collection = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 400), new Vector2(200, 50));
-        _settings = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 500), new Vector2(200, 50));
-        _quit = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 600), new Vector2(200, 50));
+        _play = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 300), new Vector2(200, 50), buttonClick);
+        _collection = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 400), new Vector2(200, 50), buttonClick);
+        _settings = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 500), new Vector2(200, 50), buttonClick);
+        _quit = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 600), new Vector2(200, 50), buttonClick);
         
         _profileImage = new Image(profileTexture, new Vector2(10, 10), new Vector2(90, 90));
         _username = new Label(_font, new Vector2(110, 15), DisplayManager.GetGraphicsDevice());
@@ -134,7 +136,7 @@ public class MainMenu : State {
         _loadingCircle = new AnimatedImage(loadingTexture, new Vector2(4, 4), new Vector2(DisplayManager.GetWidth() / 2 - 75, 250), new Vector2(150, 150));
         _matchmakingLabel = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 50, 400), DisplayManager.GetGraphicsDevice());
         _timer = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 17, 450), DisplayManager.GetGraphicsDevice());
-        _cancelButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 600), new Vector2(200, 50));
+        _cancelButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 600), new Vector2(200, 50), buttonClick);
     }
 
     private void SetListeners() {

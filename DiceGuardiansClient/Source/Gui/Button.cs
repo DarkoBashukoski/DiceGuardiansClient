@@ -1,5 +1,6 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,11 +11,24 @@ public class Button : GuiElement {
     private string _text;
     private bool _isHighlighted;
     private bool _isDisabled;
+    private SoundEffect _clickSfx;
     
     public event EventHandler Click;
 
     private MouseState _previousMouse;
 
+    public Button(Texture2D buttonTexture, SpriteFont font, Vector2 position, Vector2 size, SoundEffect clickSfx) {
+        _texture = buttonTexture;
+        _font = font;
+        _position = position;
+        _size = size;
+        _text = "";
+        _isHighlighted = false;
+        _previousMouse = Mouse.GetState();
+        _isDisabled = false;
+        _clickSfx = clickSfx;
+    }
+    
     public Button(Texture2D buttonTexture, SpriteFont font, Vector2 position, Vector2 size) {
         _texture = buttonTexture;
         _font = font;
@@ -54,6 +68,7 @@ public class Button : GuiElement {
         if (CollisionBox.Contains(point)) {
             _isHighlighted = true;
             if (_previousMouse.LeftButton == ButtonState.Released && mouse.LeftButton == ButtonState.Pressed) {
+                _clickSfx?.Play();
                 Click?.Invoke(this, EventArgs.Empty);
             }
         }

@@ -112,3 +112,7 @@ C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\n
 C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\CardNameSlot.xnb
 C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\Summoning.xnb
 C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\fontMedium.xnb
+C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\KeyboardSFX.ogg
+C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\KeyboardSFX.xnb
+C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\MouseSFX.ogg
+C:\Users\Darko\RiderProjects\DiceGuardiansClient\DiceGuardiansClient\bin\Debug\net6.0\Content\MouseSFX.xnb

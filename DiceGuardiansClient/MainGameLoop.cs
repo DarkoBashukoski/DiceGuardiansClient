@@ -79,20 +79,54 @@ public class MainGameLoop : Game {
 
         if (StateManager.GetState() is GameInstance) {
             if (Keyboard.GetState().IsKeyDown(Keys.A)) {
-                _camera.SetPosition(_camera.GetPosition().X - 1, _camera.GetPosition().Y, _camera.GetPosition().Z);
+                _camera.SetPosition(_camera.GetPosition().X - 0.3f, _camera.GetPosition().Y, _camera.GetPosition().Z);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                _camera.SetPosition(_camera.GetPosition().X + 1, _camera.GetPosition().Y, _camera.GetPosition().Z);
+                _camera.SetPosition(_camera.GetPosition().X + 0.3f, _camera.GetPosition().Y, _camera.GetPosition().Z);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                _camera.SetPosition(_camera.GetPosition().X, _camera.GetPosition().Y, _camera.GetPosition().Z - 1);
+                _camera.SetPosition(_camera.GetPosition().X, _camera.GetPosition().Y, _camera.GetPosition().Z - 0.3f);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                _camera.SetPosition(_camera.GetPosition().X, _camera.GetPosition().Y, _camera.GetPosition().Z + 1);
+                _camera.SetPosition(_camera.GetPosition().X, _camera.GetPosition().Y, _camera.GetPosition().Z + 0.3f);
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.X))
+            {
+                _camera.SetPosition(_camera.GetPosition().X, _camera.GetPosition().Y + 0.3f, _camera.GetPosition().Z);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Z))
+            {
+                _camera.SetPosition(_camera.GetPosition().X, _camera.GetPosition().Y - 0.3f, _camera.GetPosition().Z);
+            }
+            
+            if (Keyboard.GetState().IsKeyDown(Keys.H))
+            {
+                _camera.SetRotation(_camera.GetRotation().X + 1, _camera.GetRotation().Y, _camera.GetRotation().Z);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.Y))
+            {
+                _camera.SetRotation(_camera.GetRotation().X - 1, _camera.GetRotation().Y, _camera.GetRotation().Z);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.J))
+            {
+                _camera.SetRotation(_camera.GetRotation().X, _camera.GetRotation().Y + 1, _camera.GetRotation().Z);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.G))
+            {
+                _camera.SetRotation(_camera.GetRotation().X, _camera.GetRotation().Y - 1, _camera.GetRotation().Z);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.B))
+            {
+                _camera.SetRotation(_camera.GetRotation().X, _camera.GetRotation().Y, _camera.GetRotation().Z + 1);
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.N))
+            {
+                _camera.SetRotation(_camera.GetRotation().X, _camera.GetRotation().Y, _camera.GetRotation().Z - 1);
+            }
+            
         }
 
         //Vector2 coords = BoardCollisions.GetTileCoords(_camera, _mousePicker.GetRay());

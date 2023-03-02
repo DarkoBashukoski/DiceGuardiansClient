@@ -6,6 +6,7 @@ using DiceGuardiansClient.Source.Gui;
 using DiceGuardiansClient.Source.Networking;
 using DiceGuardiansClient.Source.RenderEngine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Riptide;
 
@@ -35,6 +36,8 @@ public class Collection : State {
     private Button _back;
     private Button _save;
 
+    private Label _counter;
+
     public Collection(DisplayManager displayManager, User user) : base(displayManager) {
         _loading = true;
         _user = user;
@@ -48,6 +51,10 @@ public class Collection : State {
         
         _back.SetText("Back");
         _save.SetText("Save");
+        
+        _back.Click += (_, _) => {
+            StateManager.SetState(new MainMenu(displayManager, user));
+        };
 
         Message m = Message.Create(MessageSendMode.Reliable, ClientToServerId.GetCollection);
         m.AddLong(_user.GetUserId());
@@ -99,6 +106,10 @@ public class Collection : State {
             foreach (Image i in _cardsToDraw) {
                 i.Update(gameTime);
             }
+
+            foreach (Image i in _deckContainers) {
+                i.Update(gameTime);
+            }
         }
     }
 
@@ -109,6 +120,7 @@ public class Collection : State {
         Texture2D scrollBarTexture = DisplayManager.GetContent().Load<Texture2D>("ScrollBar");
         Texture2D scrollThumbTexture = DisplayManager.GetContent().Load<Texture2D>("ScrollThumb");
         Texture2D buttonTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/Button");
+        SoundEffect buttonClick = DisplayManager.GetContent().Load<SoundEffect>("MouseSFX");
 
         _font = DisplayManager.GetContent().Load<SpriteFont>("arial");
         
@@ -120,8 +132,8 @@ public class Collection : State {
 
         _scrollBar = new ScrollBar(scrollBarTexture, scrollThumbTexture, new Vector2(956, 48), 624);
 
-        _back = new Button(buttonTexture, _font, new Vector2(1032, 614), new Vector2(98, 56));
-        _save = new Button(buttonTexture, _font, new Vector2(1134, 614), new Vector2(98, 56));
+        _back = new Button(buttonTexture, _font, new Vector2(1032, 614), new Vector2(98, 56), buttonClick);
+        _save = new Button(buttonTexture, _font, new Vector2(1134, 614), new Vector2(98, 56), buttonClick);
     }
 
     public void TriggerSuccessfulGetCollection(Message m) {
@@ -181,7 +193,12 @@ public class Collection : State {
             if (quantity > 0) {q1.SetSource(owned);}
             if (quantity > 1) {q2.SetSource(owned);}
             if (quantity > 2) {q3.SetSource(owned);}
-            
+
+            int inDeckQuantity = _collectionManager.GetCardCountInDeck(c.GetCardId());
+            if (inDeckQuantity > 0) {q1.SetSource(inDeck);}
+            if (inDeckQuantity > 1) {q2.SetSource(inDeck);}
+            if (inDeckQuantity > 2) {q3.SetSource(inDeck);}
+
             int index = row * 4 + column;
 
             i.Click += (_, _) => TryAddToDeck(c.GetCardId());
@@ -214,6 +231,7 @@ public class Collection : State {
             Vector2 size = new Vector2(width, height);
 
             Image i = new Image(containerTexture, pos, size);
+            i.Click += (_, _) => RemoveFromDeck(kvp.Key);
             Label l = new Label(_font, new Vector2(pos.X + 16, pos.Y + 8), DisplayManager.GetGraphicsDevice());
             l.SetText($"{kvp.Value}x {AllCards.GetCardData(kvp.Key).GetName()}");
             i.SetSource(source);
@@ -221,13 +239,29 @@ public class Collection : State {
             _deckLabels.Add(l);
             row++;
         }
-        
-        
     }
 
     private void TryAddToDeck(long cardId) {
-        Console.WriteLine(AllCards.GetCardData(cardId).GetName());
-        //TODO implement actual functionality
+        if (_collectionManager.GetCardCount(cardId) <= _collectionManager.GetCardCountInDeck(cardId)) {
+            return;
+        }
+
+        if (_collectionManager.GetCurrentDeckSize() >= 15) {
+            return;
+        }
+
+        _collectionManager.AddToDeck(cardId);
+        PrepareCollectionDraw();
+        PrepareDeckList();
+        ManageScroll();
+    }
+
+    private void RemoveFromDeck(long cardId) {
+        _collectionManager.RemoveFromDeck(cardId);
+        Console.WriteLine("asd");
+        PrepareCollectionDraw();
+        PrepareDeckList();
+        ManageScroll();
     }
 
     private void ManageScroll() {
@@ -260,10 +294,12 @@ public class Collection : State {
                 i.SetSource(new Rectangle(0, 0, tex.Width, tex.Height));
             }
         }
+        
         foreach (Image i in _cardQuantities) {
             i.SetTranslation(new Vector2(0, translation));
             Rectangle cardArea = i.GetDestination();
             Rectangle intersection = Rectangle.Intersect(scrollArea, cardArea);
+            i.enableDraw(scrollArea.Intersects(cardArea));
             i.SetDestination(intersection);
         }
     }

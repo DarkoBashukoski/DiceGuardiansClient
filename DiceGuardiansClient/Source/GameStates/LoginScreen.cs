@@ -5,6 +5,7 @@ using DiceGuardiansClient.Source.Gui;
 using DiceGuardiansClient.Source.Networking;
 using DiceGuardiansClient.Source.RenderEngine;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Riptide;
 
@@ -138,16 +139,19 @@ public class LoginScreen : State {
         Texture2D textBoxTexture = DisplayManager.GetContent().Load<Texture2D>("LoadingScreen/TextBox");
         Texture2D caretTexture = DisplayManager.GetContent().Load<Texture2D>("textCaret");
         _font = DisplayManager.GetContent().Load<SpriteFont>("arial");
+        SoundEffect keyboardSound = DisplayManager.GetContent().Load<SoundEffect>("KeyboardSFX");
+        SoundEffect buttonClick = DisplayManager.GetContent().Load<SoundEffect>("MouseSFX");
+
         
         _usernameLabel = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 95, 280), DisplayManager.GetGraphicsDevice());
         _passwordLabel = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 95, 380), DisplayManager.GetGraphicsDevice());
-        _username = new TextBox(textBoxTexture, caretTexture, _font, new Vector2(DisplayManager.GetWidth()/2-100, 300), new Vector2(200, 50));
-        _password = new TextBox(textBoxTexture, caretTexture, _font, new Vector2(DisplayManager.GetWidth()/2-100, 400), new Vector2(200, 50));
-        _loginButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 500), new Vector2(200, 50));
-        _registerMenuButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 150, 630), new Vector2(300, 50));
+        _username = new TextBox(textBoxTexture, caretTexture, _font, new Vector2(DisplayManager.GetWidth()/2-100, 300), new Vector2(200, 50), keyboardSound);
+        _password = new TextBox(textBoxTexture, caretTexture, _font, new Vector2(DisplayManager.GetWidth()/2-100, 400), new Vector2(200, 50), keyboardSound);
+        _loginButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 500), new Vector2(200, 50), buttonClick);
+        _registerMenuButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 150, 630), new Vector2(300, 50), buttonClick);
         
-        _registerButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 500), new Vector2(200, 50));
-        _backButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 150, 630), new Vector2(300, 50));
+        _registerButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 100, 500), new Vector2(200, 50), buttonClick);
+        _backButton = new Button(buttonTexture, _font, new Vector2(DisplayManager.GetWidth() / 2 - 150, 630), new Vector2(300, 50), buttonClick);
 
         _validatingLogin = new Label(_font, new Vector2(DisplayManager.GetWidth() / 2 - 75, 400), DisplayManager.GetGraphicsDevice());
         

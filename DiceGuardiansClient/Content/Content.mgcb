@@ -204,6 +204,12 @@
 /processorParam:TextureFormat=Color
 /build:GameHud.png
 
+#begin KeyboardSFX.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:KeyboardSFX.mp3
+
 #begin LoadingScreen/Button.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -287,6 +293,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:MenuContainer.png
+
+#begin MouseSFX.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:MouseSFX.mp3
 
 #begin PlayerMinion.fbx
 /importer:FbxImporter
